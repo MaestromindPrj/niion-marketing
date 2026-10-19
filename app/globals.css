@@ -1,0 +1,9 @@
+/* Original section and breakpoint styles are kept in public/site/original.css. */
+html { scroll-behavior: smooth; }
+body { margin: 0; }
+#niion-site { display: contents; }
+.contact-status { color: inherit; font: 14px/1.5 "DM Sans", sans-serif; width: 100%; }
+.contact-status a { color: #e206d9; text-decoration: underline; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
