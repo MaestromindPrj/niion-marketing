@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "predev": "node scripts/sync-growth-content.mjs",
+    "predev": "node scripts/sync-growth-content.mjs && node scripts/sync-services-content.mjs",
     "dev": "next dev --hostname 127.0.0.1",
-    "prebuild": "node scripts/sync-growth-content.mjs",
+    "prebuild": "node scripts/sync-growth-content.mjs && node scripts/sync-services-content.mjs",
     "build": "next build",
     "start": "node scripts/serve.mjs"
   },
