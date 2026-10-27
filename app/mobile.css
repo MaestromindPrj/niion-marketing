@@ -1,0 +1,155 @@
+/* Responsive corrections for the preserved Framer export and custom sections.
+   Scoped to small screens; desktop compositions keep their original layout. */
+@media (max-width: 1199.98px) {
+  #main .framer-hAzXf.framer-15txyk3 {
+    width: 100% !important;
+    height: auto !important;
+    min-height: 100vh;
+    min-height: 100svh;
+  }
+
+  /* Service variants use the same approved content at every breakpoint. */
+  #services .framer-8qMaq .framer-da2e6r {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 80px;
+  }
+  #services .framer-8qMaq :is(.framer-el9041-container, .framer-1f13lmy, .framer-n9m57p-container) {
+    flex: none;
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    min-height: 0;
+  }
+  #services .framer-8qMaq .framer-k7p3y0-container {
+    position: relative;
+    top: auto;
+    left: auto;
+    width: 100%;
+    flex: none;
+    transform: none !important;
+  }
+  #services :is(.framer-5WfYr .framer-glstke, .framer-bonmY .framer-d9fjvl, .framer-bonmY .framer-wtoo4e) {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 809.98px) {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+    scroll-padding-top: 104px;
+  }
+  #main { width: 100%; min-width: 0; }
+  #main .framer-YFRum { width: 100% !important; }
+  #main :is(section[id], footer) {
+    scroll-margin-top: 104px;
+  }
+  #main .framer-hAzXf > section { max-width: 100%; box-sizing: border-box; }
+
+  /* A short landscape viewport must still allow an open menu to scroll. */
+  #main .framer-evR0X.framer-389x50 {
+    box-sizing: border-box;
+    max-width: 100%;
+    max-height: 100vh;
+    max-height: 100dvh;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    padding-left: max(20px, env(safe-area-inset-left, 0px));
+    padding-right: max(20px, env(safe-area-inset-right, 0px));
+  }
+  #main .framer-evR0X a { min-height: 44px; }
+  #main .framer-evR0X [role="button"] { min-width: 44px; min-height: 44px; }
+  #main .framer-hAzXf .framer-168cvbo {
+    height: auto;
+    padding-top: 132px;
+    padding-bottom: 64px;
+  }
+  #main .framer-hAzXf .framer-1pvbk64 { gap: 64px; }
+
+  /* Let content determine height instead of clipping at exported frame sizes. */
+  #about .growth-content {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 48px max(18px, env(safe-area-inset-right, 0px)) 64px max(18px, env(safe-area-inset-left, 0px));
+    gap: 64px;
+  }
+  #about .growth-block :is(h2, h3, p, li) { overflow-wrap: anywhere; }
+  #about .growth-heading h2 { font-size: clamp(30px, 7.6vw, 44px); }
+  #about .growth-ecosystem-section .growth-heading h2 { font-size: clamp(34px, 8.8vw, 48px); }
+  #about .growth-phase {
+    position: relative;
+    top: auto;
+    min-height: 0;
+    padding: 24px;
+  }
+  #about .growth-phase-copy > p { font-size: 15px; }
+  #about .growth-phase li { font-size: 14px; }
+  #about .growth-contact > a { min-height: 44px; display: inline-flex; align-items: center; }
+  #about .growth-cta { min-height: 48px; }
+  #about .performance-scenarios { grid-template-columns: 1fr; gap: 24px; }
+  #about .performance-scenario p:not(.performance-return) { max-width: none; }
+  #about .niion-commitment-item > div { min-width: 0; }
+
+  #services .niion-services-additions {
+    box-sizing: border-box;
+    padding-left: max(18px, env(safe-area-inset-left, 0px));
+    padding-right: max(18px, env(safe-area-inset-right, 0px));
+  }
+  #services .niion-services-extension :is(h3, h4, h5, p, li) { overflow-wrap: anywhere; }
+  #services .service-section-heading { align-items: baseline; gap: 12px; }
+  #services .service-section-heading h3 { text-wrap: pretty; }
+  #services .service-panel-top > :not(.service-icon) { min-width: 0; }
+  #services .service-production-steps { grid-template-columns: 1fr; }
+  #services .service-production-steps li {
+    display: grid;
+    grid-template-columns: 30px minmax(0, 1fr);
+    column-gap: 16px;
+    align-items: baseline;
+  }
+  #services .service-production-steps h5 { margin-top: 0; }
+  #services .service-production-steps p { grid-column: 2; font-size: 14px; }
+  #services .service-text-link { min-height: 44px; }
+  #services .service-extension-contact a { min-height: 48px; }
+
+  /* 16px fields avoid automatic zoom in iOS Safari while retaining pinch zoom. */
+  #contact :is(input, textarea, select) {
+    box-sizing: border-box;
+    font-size: 16px !important;
+    line-height: 1.5;
+    max-width: 100%;
+    min-width: 0;
+    scroll-margin-block: 110px 24px;
+  }
+  #contact :is(input, select, button[type="submit"]) { min-height: 48px; }
+  #contact textarea { min-height: 144px; }
+  #contact .framer-form-text-input:has(textarea) { min-height: 144px; }
+  #contact :is(a, p), .contact-status { overflow-wrap: anywhere; }
+  #contact .contact-status { font-size: 14px; line-height: 1.6; }
+}
+
+@media (max-width: 400px) {
+  #about .growth-heading h2 { font-size: 30px; }
+  #about .growth-phase { padding: 22px 18px; }
+  #about .growth-phase h3 { font-size: 30px; }
+  #about .growth-problem-list li { padding: 22px 18px; }
+  #about .growth-problem-row { gap: 12px; }
+  #about .growth-problem-list li > p { padding-left: 0; margin-top: 12px; }
+  #about .performance-metrics strong { font-size: 32px; }
+  #about .performance-metrics li { padding: 20px 14px; }
+  #about .growth-block:has(.growth-contact) { padding: 26px 18px; }
+  #about .growth-block:has(.growth-contact) .growth-heading h2 { font-size: 32px; }
+  #about .niion-network-node { width: 30%; padding-inline: 4px; }
+  #services .service-section-heading { --service-heading-size: 25px; }
+  #services .service-word-heading > span { max-width: 100%; }
+  #services :is(.service-talent-copy, .service-extension-contact) { padding: 22px; }
+  #services :is(.framer-5WfYr.framer-7anvr3, .framer-bonmY.framer-1xajw3g) { padding-inline: 22px; }
+}
+
+/* Avoid blur work on every revealed word on phones; preserve the stagger. */
+@media (hover: none) and (pointer: coarse) {
+  #about :is(.niion-heading-word, .performance-heading-word),
+  #services .service-word-heading > span { filter: none !important; }
+}

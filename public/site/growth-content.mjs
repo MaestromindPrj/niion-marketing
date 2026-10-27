@@ -57,7 +57,10 @@ const ecosystemContent = `<section class="niion-difference growth-ecosystem-sect
   return `<div class="niion-network-node niion-node-${positions[i]}" aria-hidden="true"><span class="niion-icon">${differenceIcon(icons[i])}</span><span>${title}</span></div>`;
 }).join('')}</div></div><p class="growth-intro growth-ecosystem-note">Every layer amplifies the next. Authority makes ads cheaper. Ads feed the CRM. CRM feeds automation. Automation closes deals.</p></section>`;
 
-export const growthBlocks = [
+// Keep the approved investment copy available, but omit it from both the
+// generated page and the live renderer while public pricing is hidden.
+const showGrowthPricing = false;
+const allGrowthBlocks = [
   `<section class="growth-problem" aria-labelledby="growth-problem-title"><header class="growth-heading"><p class="growth-label">The problem</p><h2 id="growth-problem-title">${revealWords('Growth breaks when the system does.')}</h2></header><div class="growth-problem-layout"><div class="growth-problem-intro"><p class="growth-problem-eyebrow">The hidden cost</p><h3>Revenue leaks at every stage.</h3><p>Disconnected marketing, missed follow-ups, and manual processes make growth hard to predict.</p></div><ol class="growth-problem-list">${[
     ['Weak brand authority', 'You compete on price instead of value.'],
     ['Unpredictable leads', 'New opportunities arrive inconsistently.'],
@@ -77,6 +80,9 @@ export const growthBlocks = [
   commitmentContent,
   heading('What happens next', 'Build your revenue machine', 'B2B &amp; B2C specialists &middot; Chennai, India') + cards([['01 / Discovery call', 'Audit your current setup and identify growth opportunities.'], ['02 / Custom roadmap', 'A strategy for your industry, audience and goals.'], ['03 / 7-day onboarding', 'Planned full system activation within one week.'], ['04 / First leads in 30 days', 'The onboarding plan targets pipeline movement in the first month.']]) + '<div class="growth-contact"><a class="growth-cta" href="/#contact">Start your growth journey <span aria-hidden="true">&nearr;</span></a><a href="tel:+917305911111">7305 911 111</a></div>'
 ];
+
+export const growthBlocks = allGrowthBlocks.filter(block =>
+  showGrowthPricing || !block.includes('class="growth-pricing"'));
 
 // Initialise after the preserved renderer owns the DOM; release listeners on unmount.
 export function createPerformanceRef() {

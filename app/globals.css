@@ -1,5 +1,6 @@
 @import "./growth.css";
 @import "./services.css";
+@import "./mobile.css";
 /* Original section and breakpoint styles are kept in public/site/original.css. */
 html { scroll-behavior: smooth; }
 body { margin: 0; }
