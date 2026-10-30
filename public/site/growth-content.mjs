@@ -1,5 +1,6 @@
 // Content adapted from the client's Growth Marketing deck. Shared by the
 // preserved Framer renderer and the HTML generation script.
+import { aboutIntro, createAboutRef } from './about-content.mjs';
 const revealWords = (title) => title.split(/\s+/).map((word, i) => `<span class="niion-heading-word" style="--word-order:${i}">${word}</span>`).join(' ');
 const heading = (eyebrow, title, copy = '', staggered = false) => `<header class="growth-heading"><p class="growth-label">${eyebrow}</p><h2>${staggered ? revealWords(title) : title}</h2>${copy ? `<p>${copy}</p>` : ''}</header>`;
 const phases = [
@@ -61,6 +62,7 @@ const ecosystemContent = `<section class="niion-difference growth-ecosystem-sect
 // generated page and the live renderer while public pricing is hidden.
 const showGrowthPricing = false;
 const allGrowthBlocks = [
+  aboutIntro,
   `<section class="growth-problem" aria-labelledby="growth-problem-title"><header class="growth-heading"><p class="growth-label">The problem</p><h2 id="growth-problem-title">${revealWords('Growth breaks when the system does.')}</h2></header><div class="growth-problem-layout"><div class="growth-problem-intro"><p class="growth-problem-eyebrow">The hidden cost</p><h3>Revenue leaks at every stage.</h3><p>Disconnected marketing, missed follow-ups, and manual processes make growth hard to predict.</p></div><ol class="growth-problem-list">${[
     ['Weak brand authority', 'You compete on price instead of value.'],
     ['Unpredictable leads', 'New opportunities arrive inconsistently.'],
@@ -214,7 +216,8 @@ function createStagesRef() {
 }
 
 function createGrowthDesignRef(html) {
-  const sectionRef = html.includes('class="growth-performance"') ? createPerformanceRef()
+  const sectionRef = html.includes('class="niion-about"') ? createAboutRef()
+    : html.includes('class="growth-performance"') ? createPerformanceRef()
     : html.includes('class="growth-phases"') ? createStagesRef()
     : createStaggeredHeadingRef();
   let dispose;

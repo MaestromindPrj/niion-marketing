@@ -2,6 +2,7 @@
 @import "./services.css";
 @import "./pricing.css";
 @import "./mobile.css";
+@import "./about.css";
 /* Original section and breakpoint styles are kept in public/site/original.css. */
 html { scroll-behavior: smooth; }
 body { margin: 0; }
@@ -9,3 +10,14 @@ body { margin: 0; }
 .contact-status { color: inherit; font: 14px/1.5 "DM Sans", sans-serif; width: 100%; }
 .contact-status a { color: #e206d9; text-decoration: underline; }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+/* Logo slots inside the original Framer client marquee. */
+.framer-1ighnzr .niion-client-logo { width: 140px; height: 90px; box-sizing: border-box; padding: 8px; display: flex; align-items: center; justify-content: center; background: #fff; border-radius: 12px; overflow: hidden; }
+.framer-1ighnzr .niion-client-logo img { display: block; width: 100%; height: 100%; object-fit: contain; }
+
+/* Remove the decorative blue pulse and center overlay from the client marquee. */
+.framer-1ighnzr .framer-12ga4v9,
+.framer-1ighnzr .framer-nkdin0,
+.framer-1ighnzr .framer-u6tfun,
+.framer-1ighnzr .framer-1jul80d {
+  display: none !important;
+}
