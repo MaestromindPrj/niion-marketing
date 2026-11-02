@@ -61,6 +61,8 @@ const ecosystemContent = `<section class="niion-difference growth-ecosystem-sect
 // Keep the approved investment copy available, but omit it from both the
 // generated page and the live renderer while public pricing is hidden.
 const showGrowthPricing = false;
+// Retain the intro, styles and images for reuse without rendering the section.
+const showAboutIntro = false;
 const allGrowthBlocks = [
   aboutIntro,
   `<section class="growth-problem" aria-labelledby="growth-problem-title"><header class="growth-heading"><p class="growth-label">The problem</p><h2 id="growth-problem-title">${revealWords('Growth breaks when the system does.')}</h2></header><div class="growth-problem-layout"><div class="growth-problem-intro"><p class="growth-problem-eyebrow">The hidden cost</p><h3>Revenue leaks at every stage.</h3><p>Disconnected marketing, missed follow-ups, and manual processes make growth hard to predict.</p></div><ol class="growth-problem-list">${[
@@ -84,7 +86,8 @@ const allGrowthBlocks = [
 ];
 
 export const growthBlocks = allGrowthBlocks.filter(block =>
-  showGrowthPricing || !block.includes('class="growth-pricing"'));
+  (showAboutIntro || block !== aboutIntro) &&
+  (showGrowthPricing || !block.includes('class="growth-pricing"')));
 
 // Initialise after the preserved renderer owns the DOM; release listeners on unmount.
 export function createPerformanceRef() {
