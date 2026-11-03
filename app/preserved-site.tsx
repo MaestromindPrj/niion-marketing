@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
+import SiteLoader from "./site-loader";
 
 /**
  * The original compiled React renderer owns #main. Next.js owns this outer shell.
@@ -56,10 +57,17 @@ export default function PreservedSite({ html }: { html: string }) {
       const application = document.createElement("script");
       application.type = "module";
       application.src = "/vendor/framerusercontent.com/sites/6yCywluy3f19AABuNXU8BE/script_main.Cg3Mi68Z.mjs";
+      application.onload = () => {
+        document.documentElement.dataset.niionApplicationLoaded = "true";
+      };
       document.body.appendChild(application);
     };
     document.body.appendChild(bootstrap);
   }, []);
 
-  return <div id="niion-site" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: html }} />;
+  return <>
+    <SiteLoader />
+    <noscript><style>{`.site-loader { display: none !important; }`}</style></noscript>
+    <div id="niion-site" suppressHydrationWarning dangerouslySetInnerHTML={{ __html: html }} />
+  </>;
 }
