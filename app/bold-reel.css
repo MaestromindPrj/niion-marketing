@@ -1,0 +1,83 @@
+/* Video-only reel gallery: two landscape films beside one portrait film. */
+#main .framer-hAzXf .framer-452uln { gap: 40px; }
+#main .framer-hAzXf .framer-3kfjp8 {
+  box-sizing: border-box;
+  gap: 28px;
+  padding: 56px 32px 0;
+}
+#main .framer-hAzXf .framer-1ip8x9o { gap: 16px; }
+#main .framer-452uln .framer-1dhy99f { display: none; }
+#main .framer-452uln { scroll-margin-top: 112px; }
+#main .framer-452uln h2 {
+  font-family: "DM Sans", sans-serif;
+  font-size: clamp(30px, 4vw, 48px);
+  line-height: 1.12;
+  letter-spacing: -1.4px;
+  color: #fff;
+}
+.niion-bold-reel-container {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 680px;
+  min-width: 0;
+  margin-inline: auto;
+  position: relative;
+  z-index: 5;
+  padding-block: 8px;
+}
+.niion-bold-reel-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  gap: clamp(10px, 1.6vw, 20px);
+  align-items: stretch;
+}
+.niion-bold-reel-card {
+  position: relative;
+  min-width: 0;
+  width: 100%;
+  overflow: hidden;
+  isolation: isolate;
+  border-radius: 20px;
+  background: #08080b;
+  box-shadow: 0 16px 40px -18px #000, 0 0 0 1px #ffffff1f;
+  animation: niion-reel-float 7s ease-in-out infinite;
+  animation-delay: var(--reel-delay);
+  animation-play-state: paused;
+}
+.niion-bold-reel-card.is-playing { animation-play-state: running; }
+.niion-bold-reel-card--landscape { grid-column: 1; aspect-ratio: 16 / 9; }
+.niion-bold-reel-card--portrait { grid-column: 2; grid-row: 1 / span 2; }
+.niion-bold-reel-card video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  border-radius: inherit;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+.niion-bold-reel-card:focus-within { outline: 2px solid #e877ed; outline-offset: 5px; }
+@keyframes niion-reel-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+@media (max-width: 809.98px) {
+  #main .framer-hAzXf .framer-3kfjp8 {
+    gap: 24px;
+    padding-top: 40px;
+    padding-inline: max(20px, env(safe-area-inset-left, 0px)) max(20px, env(safe-area-inset-right, 0px));
+  }
+  #main .framer-hAzXf .framer-452uln { gap: 32px; }
+  .niion-bold-reel-container { max-width: 520px; }
+  .niion-bold-reel-card {
+    border-radius: 12px;
+    justify-self: center;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .niion-bold-reel-card { animation: none; }
+}
