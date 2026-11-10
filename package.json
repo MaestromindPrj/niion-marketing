@@ -7,6 +7,7 @@
     "dev": "next dev --hostname 127.0.0.1",
     "prebuild": "node scripts/sync-growth-content.mjs && node scripts/sync-services-content.mjs && node scripts/sync-pricing-content.mjs && node scripts/sync-clients-content.mjs && node scripts/sync-projects-content.mjs && node scripts/sync-bold-reel-content.mjs",
     "build": "next build",
+    "postbuild": "node scripts/compress-export.mjs",
     "start": "node scripts/serve.mjs"
   },
   "dependencies": {

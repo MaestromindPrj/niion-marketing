@@ -11,6 +11,27 @@ export function mountShader(canvas, createRenderer, uniforms = {}) {
   };
   try {
     const renderer = createRenderer();
+    // Keep the existing shader, resolution, uniforms and speed. Only stop GPU
+    // frames while the canvas cannot be seen; resume before it enters view.
+    const setSpeed = renderer.setSpeed.bind(renderer);
+    const dispose = renderer.dispose.bind(renderer);
+    let speed = renderer.speed ?? 1;
+    const bounds = canvas.getBoundingClientRect();
+    let visible = bounds.width > 0 && bounds.height > 0 && bounds.bottom > -200 && bounds.top < innerHeight + 200;
+    const sync = () => setSpeed(visible && !document.hidden ? speed : 0);
+    const observer = typeof IntersectionObserver === 'undefined' ? null : new IntersectionObserver(entries => {
+      visible = entries[0].isIntersecting && entries[0].boundingClientRect.width > 0 && entries[0].boundingClientRect.height > 0;
+      sync();
+    }, { rootMargin: '200px' });
+    if (observer) observer.observe(canvas); else visible = true;
+    document.addEventListener('visibilitychange', sync);
+    renderer.setSpeed = value => { speed = value; sync(); };
+    renderer.dispose = () => {
+      observer?.disconnect();
+      document.removeEventListener('visibilitychange', sync);
+      dispose();
+    };
+    sync();
     delete canvas.dataset.shaderFallback;
     canvas.style.background = '';
     // Allow the renderer's initial GPU work to reach a painted frame.

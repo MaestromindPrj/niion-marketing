@@ -93,10 +93,10 @@ export const clientLogos = [
   ]
 ];
 const escape = value => value.replaceAll('&', '&amp;').replaceAll('"', '&quot;').replaceAll('<', '&lt;');
-export const clientItems = clientLogos.map(([file, name]) => `<li style="width:140px;height:90px"><div class="niion-client-logo"><img src="/images/logos/${encodeURIComponent(file)}" alt="${escape(name)}" width="140" height="90" decoding="async"></div></li>`).join('');
+export const clientItems = clientLogos.map(([file, name]) => `<li style="width:140px;height:90px"><div class="niion-client-logo"><img src="/images/logos/${encodeURIComponent(file)}" alt="${escape(name)}" width="140" height="90" loading="lazy" decoding="async"></div></li>`).join('');
 export function renderClientSlots(jsx) {
   return clientLogos.map(([file, name]) => jsx('div', {
     className: 'niion-client-logo', style: { width: 140, height: 90, flexShrink: 0 },
-    children: jsx('img', { src: '/images/logos/' + encodeURIComponent(file), alt: name, width: 140, height: 90, decoding: 'async' }),
+    children: jsx('img', { src: '/images/logos/' + encodeURIComponent(file), alt: name, width: 140, height: 90, loading: 'lazy', decoding: 'async' }),
   }, file));
 }

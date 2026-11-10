@@ -15,7 +15,33 @@ const server = http.createServer(async (req,res) => {
     if (file !== root && !file.startsWith(root + path.sep)) { res.writeHead(403).end(); return; }
     let info = await stat(file);
     if (info.isDirectory()) { file=path.join(file,"index.html"); info=await stat(file); }
-    const headers = {"Content-Type":mime[path.extname(file)]||"application/octet-stream", "Accept-Ranges":"bytes", "Cache-Control":"no-cache", "X-Content-Type-Options":"nosniff"};
+    const headers = {"Content-Type":mime[path.extname(file)]||"application/octet-stream", "Accept-Ranges":"bytes", "Cache-Control":pathname.startsWith('/_next/static/') ? 'public, max-age=31536000, immutable' : 'public, max-age=0, must-revalidate', "X-Content-Type-Options":"nosniff"};
+    // Compression is prepared at build time, keeping request-time CPU work low.
+    // Range requests always refer to the original media bytes.
+    if (!req.headers.range && /\.(?:html|css|js|mjs|json|svg|txt)$/.test(file)) {
+      headers.Vary = 'Accept-Encoding';
+      const accepted = new Map((req.headers['accept-encoding'] || '').split(',').map(value => {
+        const [name, ...parameters] = value.trim().split(';');
+        const quality = parameters.find(parameter => parameter.trim().startsWith('q='));
+        return [name, quality ? Number(quality.trim().slice(2)) : 1];
+      }));
+      for (const [encoding, extension] of [['br', '.br'], ['gzip', '.gz']]) {
+        if ((accepted.get(encoding) ?? accepted.get('*') ?? 0) <= 0) continue;
+        try {
+          const compressed = await stat(file + extension);
+          if (compressed.mtimeMs < info.mtimeMs) continue;
+          file += extension;
+          info = compressed;
+          headers['Content-Encoding'] = encoding;
+          break;
+        } catch { /* A development export may not have compressed variants yet. */ }
+      }
+    }
+    headers.ETag = `W/"${info.size.toString(16)}-${info.mtimeMs.toString(16)}"`;
+    headers['Last-Modified'] = info.mtime.toUTCString();
+    if (req.headers['if-none-match']?.split(',').some(tag => tag.trim() === headers.ETag || tag.trim() === '*')) {
+      res.writeHead(304, headers).end(); return;
+    }
     let start=0, end=info.size-1, status=200;
     const range=req.headers.range?.match(/^bytes=(\d+)-(\d*)$/);
     if(range){

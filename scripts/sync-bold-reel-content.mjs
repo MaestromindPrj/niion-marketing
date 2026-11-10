@@ -16,6 +16,9 @@ if (headings.length === 2) {
 }
 support = support.replaceAll("Effortlessly connect with your favorite tools. Whether it's your CRM, email marketing platform.", 'We love hearing new ideas — let’s turn yours into a success story.');
 html = html.slice(0, supportIndex) + support + html.slice(supportEnd);
+// The compiled mobile overrides share this legacy copy in more than one
+// section. Match the existing client text in SSR to avoid a cold-load rebuild.
+html = html.replaceAll("Effortlessly connect with your favorite tools. Whether it's your CRM, email marketing platform.", 'We love hearing new ideas — let’s turn yours into a success story.');
 
 const marker = '<!-- niion-bold-reel:start -->';
 const endMarker = '<!-- niion-bold-reel:end -->';
