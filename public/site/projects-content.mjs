@@ -1,3 +1,4 @@
+import { arrowIcon, renderArrowIcon } from "./arrow-icon.mjs";
 import { ue as useEffect, ye as useState } from '../vendor/framerusercontent.com/sites/6yCywluy3f19AABuNXU8BE/react._JDI0EU2.mjs';
 
 export const projects = [
@@ -87,7 +88,7 @@ export const projectsContent = `
   <div class="niion-projects-grid">${rows.map(row => `<div class="niion-projects-row">${row.map(project => `
     <a class="niion-project-card" href="${escape(project.href)}" target="_blank" rel="noopener noreferrer" aria-label="Visit ${escape(project.title)} website (opens in a new tab)">
       <div class="niion-project-preview"><img src="${project.src}" alt="${escape(project.title)} website screenshot" width="${project.width}" height="${project.height}" loading="lazy" decoding="async"></div>
-      <div class="niion-project-caption"><h3>${escape(project.title)}</h3><span aria-hidden="true">&#8599;</span></div>
+      <div class="niion-project-caption"><h3>${escape(project.title)}</h3><span aria-hidden="true">${arrowIcon}</span></div>
     </a>`).join('')}</div>`).join('')}</div>`;
 export const projectsSection = `<section id="projects" class="niion-projects" aria-labelledby="niion-projects-title">${projectsContent}</section>`;
 function ProjectsSection({ jsx, Ticker }) {
@@ -120,7 +121,7 @@ function ProjectsSection({ jsx, Ticker }) {
             'aria-label': 'Visit ' + project.title + ' website (opens in a new tab)',
             children: [
               jsx('div', { className: 'niion-project-preview', children: jsx('img', { src: project.src, alt: project.title + ' website screenshot', width: project.width, height: project.height, loading: 'lazy', decoding: 'async' }) }),
-              jsx('div', { className: 'niion-project-caption', children: [jsx('h3', { children: project.title }), jsx('span', { 'aria-hidden': true, children: '\u2197' })] }),
+              jsx('div', { className: 'niion-project-caption', children: [jsx('h3', { children: project.title }), jsx('span', { 'aria-hidden': true, children: renderArrowIcon(jsx) })] }),
             ],
           }, project.src)),
         }),

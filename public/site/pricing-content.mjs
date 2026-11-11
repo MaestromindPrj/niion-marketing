@@ -1,3 +1,4 @@
+import { arrowIcon } from "./arrow-icon.mjs";
 // Shared by the static export and the preserved renderer.
 export const pricingContent = [
   '<div class="niion-pricing-content">',
@@ -6,7 +7,7 @@ export const pricingContent = [
   '<p class="niion-pricing-eyebrow">Built around your business</p>',
   '<h2 id="custom-plan-title">Contact us for a <span>customized plan</span> for your business</h2>',
   '<p class="niion-pricing-description">Tell us about your goals. We\'ll tailor the right mix of services to your business, budget, and next stage of growth.</p>',
-  '<a class="niion-pricing-cta" href="/#contact">Contact us <span aria-hidden="true">&nearr;</span></a>',
+  '<a class="niion-pricing-cta" href="/#contact">Contact us <span aria-hidden="true">' + arrowIcon + '</span></a>',
   '</article>',
   '</div>',
 ].join('');
