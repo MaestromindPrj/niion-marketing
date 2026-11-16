@@ -1,4 +1,5 @@
 #price-plan {
+  --pricing-accent: var(--token-6c7aca44-6e1b-43c8-8847-280a6a84942a, #398fff);
   box-sizing: border-box;
   scroll-margin-top: 104px;
 }
@@ -41,7 +42,7 @@
   padding: 64px 48px;
   border: 1px solid #ffffff26;
   border-radius: 28px;
-  background: radial-gradient(ellipse at 50% 0%, #e206d914, transparent 65%), #0b0b0b;
+  background: radial-gradient(ellipse at 50% 0%, #398fff14, transparent 65%), #0b0b0b;
   text-align: center;
 }
 
@@ -57,7 +58,7 @@
 #price-plan .niion-pricing-card::before {
   inset: -35%;
   background:
-    radial-gradient(ellipse at 30% 28%, #e206d924, transparent 42%),
+    radial-gradient(ellipse at 30% 28%, #398fff24, transparent 42%),
     radial-gradient(ellipse at 72% 72%, #398fff1c, transparent 40%);
 }
 
@@ -66,7 +67,7 @@
   left: 0;
   width: 35%;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #f8b5f4, transparent);
+  background: linear-gradient(90deg, transparent, #b5d7ff, transparent);
   opacity: 0;
 }
 
@@ -87,7 +88,7 @@
   text-wrap: balance;
 }
 
-#price-plan h2 span { color: #ee62e8; }
+#price-plan h2 span { color: var(--pricing-accent); }
 
 #price-plan .niion-pricing-description {
   max-width: 560px;
@@ -117,8 +118,8 @@
 }
 
 #price-plan .niion-pricing-cta span { display: inline-block; font-size: 22px; line-height: 1; }
-#price-plan .niion-pricing-cta:hover { background: #ee62e8; }
-#price-plan .niion-pricing-cta:focus-visible { outline: 2px solid #ee62e8; outline-offset: 5px; }
+#price-plan .niion-pricing-cta:hover { background: var(--pricing-accent); }
+#price-plan .niion-pricing-cta:focus-visible { outline: 2px solid var(--pricing-accent); outline-offset: 5px; }
 
 @media (prefers-reduced-motion: no-preference) {
   /* A single entrance starts when the section enters the viewport. Content is
@@ -166,12 +167,12 @@
 @media (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
   #price-plan .niion-pricing-card:hover {
     transform: translateY(-4px);
-    border-color: #ee62e85c;
-    box-shadow: 0 18px 60px -32px #e206d947;
+    border-color: #398fff5c;
+    box-shadow: 0 18px 60px -32px #398fff47;
   }
   #price-plan .niion-pricing-cta:hover {
     transform: translateY(-2px);
-    box-shadow: 0 8px 28px -14px #ee62e8aa;
+    box-shadow: 0 8px 28px -14px #398fffaa;
   }
   #price-plan .niion-pricing-cta:hover span { transform: translate(3px, -3px); }
 }

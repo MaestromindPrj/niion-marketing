@@ -1,14 +1,22 @@
-// Shared markup keeps the static export and the preserved React renderer identical.
+// The same markup is used by the static export and the Framer client renderer.
 export const reels = [
-  { file: 'testt.mp4', label: 'Niion creative reel', shape: 'landscape', width: 854, height: 480, poster: 'niion' },
-  { file: 'Spall Ball.mp4', label: 'Spall Ball reel', shape: 'landscape', width: 854, height: 480, poster: 'spall-ball' },
-  { file: 'Techpump.mp4', label: 'Techpump reel', shape: 'portrait', width: 270, height: 480, poster: 'techpump' },
+  { file: 'testt.mp4', label: 'Niion creative reel', placement: 'left', width: 854, height: 480, poster: 'niion' },
+  { file: 'Techpump.mp4', label: 'Techpump reel', placement: 'center', width: 270, height: 480, poster: 'techpump' },
+  { file: 'Spall Ball.mp4', label: 'Spall Ball reel', placement: 'right', width: 854, height: 480, poster: 'spall-ball' },
 ];
 
-export const boldReelCardHtml = `<div class="niion-bold-reel-grid">${reels.map((reel, index) => `
-  <div class="niion-bold-reel-card niion-bold-reel-card--${reel.shape}" data-niion-reel style="--reel-delay:${index * 120}ms">
-    <video data-src="/reels/${encodeURIComponent(reel.file)}" poster="/reels/posters/${reel.poster}.jpg" width="${reel.width}" height="${reel.height}" loop muted playsinline preload="none" disablepictureinpicture tabindex="0" role="button" aria-label="Play ${reel.label}" data-label="${reel.label}"></video>
-  </div>`).join('')}</div>`;
+export const boldReelCardHtml = `<div class="niion-bold-reel-container">
+  <h2 class="niion-reel-heading" id="niion-reel-title"><span>Let\u2019s Craft</span> <span>Something <span class="niion-reel-heading-accent">Bold.</span></span></h2>
+  <div class="niion-bold-reel-grid" aria-label="Niion motion reels">
+    ${reels.map((reel, index) => `<div class="niion-reel-slot niion-reel-slot--${reel.placement}">
+      <div class="niion-bold-reel-card" data-niion-reel style="--reel-delay:-${index * 1.8}s">
+        <video data-src="/reels/${encodeURIComponent(reel.file)}" poster="/reels/posters/${reel.poster}.jpg" width="${reel.width}" height="${reel.height}" loop muted playsinline preload="none" disablepictureinpicture tabindex="0" role="button" aria-label="Play ${reel.label}" data-label="${reel.label}"></video>
+      </div>
+    </div>`).join('')}
+  </div>
+</div>`;
+
+export const boldReelSectionHtml = `<section class="framer-452uln niion-bold-reel-section" id="reels" aria-labelledby="niion-reel-title">${boldReelCardHtml}</section>`;
 
 export function createBoldReelRef() {
   let dispose;
@@ -89,10 +97,12 @@ export function createBoldReelRef() {
 }
 
 let stableRef;
-export function renderBoldReelCard(jsx) {
+export function renderBoldReelSection(jsx) {
   if (!stableRef) stableRef = createBoldReelRef();
-  return jsx('div', {
-    className: 'niion-bold-reel-container',
+  return jsx('section', {
+    className: 'framer-452uln niion-bold-reel-section',
+    id: 'reels',
+    'aria-labelledby': 'niion-reel-title',
     ref: stableRef,
     dangerouslySetInnerHTML: { __html: boldReelCardHtml }
   }, 'bold-reel-card');
