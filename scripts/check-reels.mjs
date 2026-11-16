@@ -14,7 +14,9 @@ try {
     await page.waitForTimeout(9000);
     const videos=page.locator('.niion-bold-reel-card video');
     assert.equal(await videos.count(),3);
-    assert.equal(await page.locator('.niion-bold-reel-container :is(button,h4,p,span)').count(),0);
+    assert.equal((await page.locator('#niion-reel-title').innerText()).replace(/\s+/g,' ').trim().toLowerCase(), 'let\u2019s craft something bold.');
+    assert.equal(await page.locator('#reels .niion-reel-signoff').count(), 0);
+    assert.equal(await page.locator('.niion-bold-reel-card :is(button,h4,p,span)').count(),0);
     for (const video of await videos.all()) {
       await video.evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
       await page.waitForFunction(el=>el.readyState>=2 && !el.paused,await video.elementHandle());
@@ -24,6 +26,7 @@ try {
     }
     await videos.first().evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
     await page.waitForTimeout(600);
+    await videos.first().focus();
     await videos.first().click({force:true});
     assert(await videos.first().evaluate(v=>v.paused),'Click should pause');
     await videos.first().press('Enter');
