@@ -1,7 +1,14 @@
 import { readFile } from "node:fs/promises";
+import type { Metadata } from "next";
 import path from "node:path";
 import PreservedSite from "./preserved-site";
 import { imageLoading } from "../public/site/image-loading.mjs";
+
+export const metadata: Metadata = {
+  alternates: {
+    canonical: "https://www.niionmarketing.com/",
+  },
+};
 
 export default async function Home() {
   const source = await readFile(path.join(process.cwd(), "public/site/body.html"), "utf8");
