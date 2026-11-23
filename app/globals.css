@@ -37,3 +37,6 @@ body { margin: 0; }
 .framer-1ighnzr .framer-1jul80d {
   display: none !important;
 }
+
+/* Keep in-page destinations clear of the fixed navigation. */
+#about, #events, #projects, #price-plan, #contact { scroll-margin-top: 100px; }

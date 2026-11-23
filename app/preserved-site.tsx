@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import SiteLoader from "./site-loader";
+import { installNavigation } from "../public/site/navigation.mjs";
 
 /**
  * The original compiled React renderer owns #main. Next.js owns this outer shell.
@@ -43,40 +44,7 @@ export default function PreservedSite({ html, showLoader = true }: { html: strin
       window.location.href = url;
     }, true);
 
-    // Keep legacy index.html anchors on the current origin.
-    document.addEventListener("click", (event) => {
-      const target = event.target instanceof Element ? event.target.closest<HTMLAnchorElement>("a") : null;
-      if (!target) return;
-      // Resolve this navigation item ourselves: the legacy router only knows
-      // the home page and can rewrite links to the new Services route.
-      if (target.closest(".framer-yctd3k-container")) {
-        target.href = "/services/";
-        if (!event.ctrlKey && !event.metaKey && !event.shiftKey && !event.altKey && target.target !== "_blank") {
-          event.preventDefault();
-          event.stopImmediatePropagation();
-          if (window.location.pathname.replace(/\/$/, "") === "/services") {
-            document.getElementById("services")?.scrollIntoView({ behavior: "smooth" });
-          } else {
-            window.location.assign(target.href);
-          }
-        }
-        return;
-      }
-      const href = target.getAttribute("href");
-      if (href?.startsWith("index.html")) target.href = "/" + href.slice(10);
-      // The preserved renderer knows only the home route. Cross-page links must
-      // load the matching Next.js shell instead of using its internal router.
-      const url = new URL(target.href, window.location.href);
-      if (url.origin === window.location.origin &&
-          (window.location.pathname.startsWith("/services") || url.pathname.startsWith("/services")) &&
-          url.pathname !== window.location.pathname && !event.ctrlKey && !event.metaKey &&
-          !event.shiftKey && !event.altKey && target.target !== "_blank") {
-        event.preventDefault();
-        event.stopImmediatePropagation();
-        window.location.assign(url.href);
-      }
-
-    }, true);
+    installNavigation();
 
     const bootstrap = document.createElement("script");
     bootstrap.src = "/site/bootstrap.js";
