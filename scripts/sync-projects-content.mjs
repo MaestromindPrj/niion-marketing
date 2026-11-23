@@ -26,7 +26,7 @@ if (next !== html) await writeFile(file, next);
 // The preserved Framer renderer must hydrate the same section as the export.
 const bundleFile = new URL('../public/vendor/framerusercontent.com/sites/6yCywluy3f19AABuNXU8BE/KF6OkDm_5yBOnHEndpDrcRjsQbJzsVJlsmHeNvGGzS0.xIDEcsax.mjs', import.meta.url);
 const original = await readFile(bundleFile, 'utf8');
-let code = original;
+let code = original.replace(/\r\n/g, "\n");
 const replacement = 'renderProjectsSection(m,Jn)';
 if (!code.includes(replacement)) {
   const from = code.indexOf('b(`div`,{className:`framer-6uucmi`');
@@ -35,5 +35,6 @@ if (!code.includes(replacement)) {
   code = code.slice(0, from) + replacement + code.slice(to);
 }
 const importStatement = 'import { renderProjectsSection } from "/site/projects-content.mjs";\n';
-if (!code.includes(importStatement)) code = importStatement + code;
+// Remove existing copies before inserting one import, including files checked out with CRLF.
+code = importStatement + code.split(importStatement).join('');
 if (code !== original) await writeFile(bundleFile, code);

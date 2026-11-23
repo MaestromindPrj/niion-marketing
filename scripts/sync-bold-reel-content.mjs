@@ -19,7 +19,7 @@ if (html !== nextHtml) await writeFile(htmlFile, nextHtml);
 
 const bundleFile = new URL('../public/vendor/framerusercontent.com/sites/6yCywluy3f19AABuNXU8BE/KF6OkDm_5yBOnHEndpDrcRjsQbJzsVJlsmHeNvGGzS0.xIDEcsax.mjs', import.meta.url);
 const original = await readFile(bundleFile, 'utf8');
-let code = original;
+let code = original.replace(/\r\n/g, "\n");
 const render = 'renderBoldReelSection(m)';
 if (!code.includes(render)) {
   const from = code.indexOf('b(`section`,{className:`framer-452uln`');
@@ -29,6 +29,7 @@ if (!code.includes(render)) {
 }
 code = code.replace('import { renderBoldReelCard } from "/site/bold-reel-content.mjs";\n', '');
 const importStatement = 'import { renderBoldReelSection } from "/site/bold-reel-content.mjs";\n';
-if (!code.includes(importStatement)) code = importStatement + code;
+// Remove existing copies before inserting one import, including files checked out with CRLF.
+code = importStatement + code.split(importStatement).join('');
 if (code !== original) await writeFile(bundleFile, code);
 console.log('Reel section synchronized for server and client.');

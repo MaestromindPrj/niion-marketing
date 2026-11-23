@@ -203,3 +203,101 @@ export const renderServicesExtension = jsx => jsx('div', {
   ref: createServicesRef(),
   dangerouslySetInnerHTML: { __html: servicesExtension }
 }, 'services-specialties');
+
+// One shared hero and content tree for the server export and preserved renderer.
+const servicesHero = `<header class="services-hero" aria-labelledby="services-hero-title">
+  <div class="services-hero-frame" aria-hidden="true"></div>
+  <div class="services-hero-glow" aria-hidden="true"></div>
+  <div class="services-hero-content">
+    <p class="services-hero-eyebrow"><span>NIION</span><span class="services-hero-eyebrow-divider" aria-hidden="true"></span>OUR SERVICES</p>
+    <h1 id="services-hero-title"><span>Your brand. Elevated.</span><span>From idea to impact.</span></h1>
+    <p class="services-hero-description">Ideas that connect. Stories that stay. Experiences that move people.<br class="services-hero-break"> We bring every part of your brand together.</p>
+    <div class="services-hero-actions">
+      <a class="services-hero-primary" href="#service-specialties">Explore our services</a>
+      <a class="services-hero-secondary" href="/#contact">Let's talk</a>
+    </div>
+    <div class="services-hero-expertise">
+      <nav class="services-hero-disciplines" aria-label="Explore our expertise">
+        <a href="#service-lead-title" data-hero-preview="Connect with the right people. Turn attention into growth." data-active="true">Strategy</a>
+        <a href="#service-studio-title" data-hero-preview="Distinctive content and design that give your brand a voice.">Creative</a>
+        <a href="#service-commercial-title" data-hero-preview="From the first script to the final frame. Every detail considered.">Production</a>
+        <a href="#service-events-title" data-hero-preview="Thoughtfully crafted events. Lasting impressions.">Experiences</a>
+      </nav>
+      <p class="services-hero-preview">Connect with the right people. Turn attention into growth.</p>
+    </div>
+  </div>
+</header>`;
+
+function createServicesPageRef() {
+  const reveal = createServicesRef();
+  let dispose;
+  return root => {
+    dispose?.();
+    dispose = undefined;
+    reveal(root);
+    const hero = root?.querySelector('.services-hero');
+    if (!hero) return;
+    const glow = hero.querySelector('.services-hero-glow');
+    const nav = hero.querySelector('.services-hero-disciplines');
+    const links = [...nav.querySelectorAll('a')];
+    const preview = hero.querySelector('.services-hero-preview');
+    const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const pointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+    const select = link => {
+      links.forEach(item => item.toggleAttribute('data-active', item === link));
+      preview.textContent = link.dataset.heroPreview;
+    };
+    const selectEvent = event => {
+      const link = event.target.closest('a');
+      if (links.includes(link)) select(link);
+    };
+    const restore = () => select(links.includes(document.activeElement) ? document.activeElement : links[0]);
+    nav.addEventListener('pointerover', selectEvent);
+    nav.addEventListener('focusin', selectEvent);
+    nav.addEventListener('pointerleave', restore);
+    const onFocusOut = event => { if (!nav.contains(event.relatedTarget)) select(links[0]); };
+    nav.addEventListener('focusout', onFocusOut);
+
+    let frame = 0;
+    let x = 50, y = 35;
+    const reset = () => {
+      cancelAnimationFrame(frame);
+      frame = 0;
+      hero.style.removeProperty('--hero-light-x');
+      hero.style.removeProperty('--hero-light-y');
+    };
+    const move = event => {
+      if (motion.matches || !pointer.matches) return;
+      const bounds = glow.getBoundingClientRect();
+      x = (event.clientX - bounds.left) / bounds.width * 100;
+      y = (event.clientY - bounds.top) / bounds.height * 100;
+      if (!frame) frame = requestAnimationFrame(() => {
+        hero.style.setProperty('--hero-light-x', `${x}%`);
+        hero.style.setProperty('--hero-light-y', `${y}%`);
+        frame = 0;
+      });
+    };
+    hero.addEventListener('pointermove', move, { passive: true });
+    hero.addEventListener('pointerleave', reset);
+    motion.addEventListener('change', reset);
+    pointer.addEventListener('change', reset);
+    dispose = () => {
+      reset();
+      hero.removeEventListener('pointermove', move);
+      hero.removeEventListener('pointerleave', reset);
+      nav.removeEventListener('pointerover', selectEvent);
+      nav.removeEventListener('focusin', selectEvent);
+      nav.removeEventListener('pointerleave', restore);
+      nav.removeEventListener('focusout', onFocusOut);
+      motion.removeEventListener('change', reset);
+      pointer.removeEventListener('change', reset);
+    };
+  };
+}
+const servicesPageContent = `${servicesHero}<div id="service-specialties" class="niion-services-additions">${servicesExtension}</div>`;
+export const servicesPageHtml = `<main id="services" class="niion-services-page">${servicesPageContent}</main>`;
+export const renderServicesPage = jsx => jsx('main', {
+  id: 'services', className: 'niion-services-page',
+  ref: createServicesPageRef(),
+  dangerouslySetInnerHTML: { __html: servicesPageContent }
+}, 'services-page');
