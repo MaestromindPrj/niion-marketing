@@ -6,7 +6,7 @@
   font-display: swap;
 }
 
-/* Poster-like typography and a three-film fan, scoped to the reels section. */
+/* Poster-like typography and a five-card fan cycling 15 reels right-to-left. */
 #main .framer-hAzXf .niion-bold-reel-section {
   display: block;
   position: relative;
@@ -15,10 +15,7 @@
   width: 100%;
   max-width: 1480px;
   padding: clamp(56px, 5.5vw, 80px) 32px clamp(64px, 6vw, 88px);
-  background:
-    linear-gradient(to bottom, transparent calc(100% - 224px), #000 100%),
-    url("/vendor/framerusercontent.com/images/sr8vmLBhND1D86vmn1G0mLCt8.png") center / cover no-repeat,
-    #000;
+  background: #000;
   overflow: hidden;
   scroll-margin-top: 110px;
 }
@@ -48,23 +45,78 @@
   position: relative;
   z-index: 2;
   width: 100%;
-  max-width: 920px;
-  height: clamp(340px, 32vw, 440px);
-  margin: -8px auto -14px;
+  max-width: 1200px;
+  height: clamp(355px, 33vw, 456px);
+  margin: -8px auto 0;
 }
 .niion-reel-slot {
   --reel-tilt: 0deg;
   --reel-x: -50%;
   position: absolute;
-  top: 26px;
+  top: 2px;
   left: 50%;
-  width: clamp(204px, 20vw, 270px);
+  width: clamp(150px, 17.5vw, 240px);
   transform: translateX(var(--reel-x)) rotate(var(--reel-tilt));
   transform-origin: 50% 90%;
+  will-change: transform, opacity;
+  transition:
+    transform .82s cubic-bezier(.22, 1, .36, 1),
+    top .82s cubic-bezier(.22, 1, .36, 1),
+    opacity .62s ease;
 }
-.niion-reel-slot--left { --reel-x: -130%; --reel-tilt: -12deg; z-index: 1; }
-.niion-reel-slot--center { top: 2px; --reel-tilt: -2deg; z-index: 3; }
-.niion-reel-slot--right { --reel-x: 30%; --reel-tilt: 12deg; z-index: 2; }
+.niion-reel-slot[data-reel-pos="-3"] {
+  top: 88px;
+  --reel-x: -266%;
+  --reel-tilt: -21deg;
+  z-index: 0;
+  opacity: 0;
+  pointer-events: none;
+}
+.niion-reel-slot[data-reel-pos="-2"] {
+  top: 52px;
+  --reel-x: -194%;
+  --reel-tilt: -14deg;
+  z-index: 1;
+  opacity: 1;
+}
+.niion-reel-slot[data-reel-pos="-1"] {
+  top: 20px;
+  --reel-x: -122%;
+  --reel-tilt: -7deg;
+  z-index: 3;
+  opacity: 1;
+}
+.niion-reel-slot[data-reel-pos="0"] {
+  top: 2px;
+  --reel-x: -50%;
+  --reel-tilt: 0deg;
+  z-index: 5;
+  opacity: 1;
+}
+.niion-reel-slot[data-reel-pos="1"] {
+  top: 20px;
+  --reel-x: 22%;
+  --reel-tilt: 7deg;
+  z-index: 4;
+  opacity: 1;
+}
+.niion-reel-slot[data-reel-pos="2"] {
+  top: 52px;
+  --reel-x: 94%;
+  --reel-tilt: 14deg;
+  z-index: 2;
+  opacity: 1;
+}
+.niion-reel-slot[data-reel-pos="queue"] {
+  top: 88px;
+  --reel-x: 166%;
+  --reel-tilt: 21deg;
+  z-index: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: none;
+}
 .niion-bold-reel-card {
   position: relative;
   width: 100%;
@@ -92,7 +144,7 @@
   -webkit-tap-highlight-color: transparent;
   touch-action: manipulation;
 }
-.niion-reel-slot:focus-within { z-index: 5; }
+.niion-reel-slot:focus-within { z-index: 6; }
 .niion-bold-reel-card:focus-within { outline: 2px solid #ef8bea; outline-offset: 5px; }
 #main .niion-bold-reel-section .niion-reel-signoff {
   position: relative;
@@ -121,11 +173,15 @@
     font-size: clamp(52px, 14.3vw, 96px);
     line-height: .94;
   }
-  .niion-bold-reel-grid { height: clamp(245px, 68vw, 390px); margin-top: 8px; margin-bottom: -4px; }
-  .niion-reel-slot { width: clamp(112px, 35vw, 210px); top: 24px; }
-  .niion-reel-slot--left { --reel-x: -106%; --reel-tilt: -12deg; }
-  .niion-reel-slot--right { --reel-x: 6%; --reel-tilt: 12deg; }
-  .niion-reel-slot--center { top: 8px; }
+  .niion-bold-reel-grid { height: clamp(210px, 48vw, 310px); margin-top: 8px; margin-bottom: 0; }
+  .niion-reel-slot { width: clamp(76px, 22.5vw, 150px); }
+  .niion-reel-slot[data-reel-pos="-3"] { top: 62px; --reel-x: -242%; --reel-tilt: -21deg; }
+  .niion-reel-slot[data-reel-pos="-2"] { top: 36px; --reel-x: -178%; --reel-tilt: -14deg; }
+  .niion-reel-slot[data-reel-pos="-1"] { top: 14px; --reel-x: -114%; --reel-tilt: -7deg; }
+  .niion-reel-slot[data-reel-pos="0"] { top: 4px; --reel-x: -50%; --reel-tilt: 0deg; }
+  .niion-reel-slot[data-reel-pos="1"] { top: 14px; --reel-x: 14%; --reel-tilt: 7deg; }
+  .niion-reel-slot[data-reel-pos="2"] { top: 36px; --reel-x: 78%; --reel-tilt: 14deg; }
+  .niion-reel-slot[data-reel-pos="queue"] { top: 62px; --reel-x: 142%; --reel-tilt: 21deg; }
   .niion-bold-reel-card { border-radius: 11px; }
   #main .niion-bold-reel-section .niion-reel-signoff {
     font-size: clamp(23px, 5.4vw, 42px);
@@ -134,5 +190,6 @@
   }
 }
 @media (prefers-reduced-motion: reduce) {
+  .niion-reel-slot { transition: none; }
   .niion-bold-reel-card { animation: none; }
 }

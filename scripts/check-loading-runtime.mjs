@@ -13,7 +13,7 @@ try {
  const deferred=page.locator('img[src*="mi0XhpEbKe1FE3NBs5Vc4A2o"]:visible').first();
  assert.equal(await deferred.getAttribute('loading'),'lazy');await deferred.evaluate(el=>el.scrollIntoView({behavior:'instant',block:'center'}));await page.waitForFunction(el=>el.complete&&el.naturalWidth>0,await deferred.elementHandle());
  const lastCanvas=page.locator('canvas').last();await lastCanvas.evaluate(el=>el.scrollIntoView({behavior:'instant',block:'center'}));await page.waitForTimeout(500);const resumed=await snapshot();await page.waitForTimeout(350);const later=await snapshot();if(!later.at(-1).fallback)assert(later.at(-1).count>resumed.at(-1).count,'Shader should resume near the viewport');
- for(const video of await page.locator('.niion-bold-reel-card video').all()){await video.evaluate(el=>el.scrollIntoView({behavior:'instant',block:'center'}));await page.waitForFunction(el=>el.readyState>=2&&!el.paused,await video.elementHandle());}
+ await page.locator('#reels').evaluate(el=>el.scrollIntoView({behavior:'instant',block:'center'}));for(const video of await page.locator('.niion-reel-slot:not([aria-hidden="true"]) video').all()){await page.waitForFunction(el=>el.readyState>=2&&!el.paused,await video.elementHandle());}
  await page.reload({waitUntil:'domcontentloaded'});await page.waitForSelector('.site-loader--finished',{state:'attached'});
  assert.deepEqual(errors,[]);console.log('Visible animations, off-screen GPU pause/resume, deferred full-quality image, all reels, and repeat visit passed');
 }finally{await browser.close()}process.exit(0);

@@ -12,33 +12,35 @@ try {
     page.on('pageerror',e=>errors.push(e.message));
     await page.goto('http://127.0.0.1:3009');
     await page.waitForTimeout(9000);
-    const videos=page.locator('.niion-bold-reel-card video');
-    assert.equal(await videos.count(),3);
+    const allVideos = page.locator('.niion-bold-reel-card video');
+    const visibleVideos = page.locator('.niion-reel-slot:not([aria-hidden="true"]) video');
+    assert.equal(await allVideos.count(), 15);
+    assert.equal(await visibleVideos.count(), 5);
     assert.equal((await page.locator('#niion-reel-title').innerText()).replace(/\s+/g,' ').trim().toLowerCase(), 'let\u2019s craft something bold.');
     assert.equal(await page.locator('#reels .niion-reel-signoff').count(), 0);
     assert.equal(await page.locator('.niion-bold-reel-card :is(button,h4,p,span)').count(),0);
-    for (const video of await videos.all()) {
-      await video.evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
+    await page.locator('#reels').evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
+    for (const video of await visibleVideos.all()) {
       await page.waitForFunction(el=>el.readyState>=2 && !el.paused,await video.elementHandle());
       assert.equal(await video.evaluate(v=>v.muted&&v.playsInline&&!v.controls),true);
       const bounds=await video.boundingBox();
       assert(bounds.x>=-1 && bounds.x+bounds.width<=width+1,'Reel overflows viewport');
     }
-    await videos.first().evaluate(el=>el.scrollIntoView({block:'center',behavior:'instant'}));
+    const firstVisible = visibleVideos.first();
     await page.waitForTimeout(600);
-    await videos.first().focus();
-    await videos.first().click({force:true});
-    assert(await videos.first().evaluate(v=>v.paused),'Click should pause');
-    await videos.first().press('Enter');
-    await page.waitForFunction(el=>!el.paused,await videos.first().elementHandle());
+    await firstVisible.focus();
+    await firstVisible.click({force:true});
+    assert(await firstVisible.evaluate(v=>v.paused),'Click should pause');
+    await firstVisible.press('Enter');
+    await page.waitForFunction(el=>!el.paused,await firstVisible.elementHandle());
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
     assert.equal(overflow,false,'Page overflows horizontally');
     if(width===390||width===1440){await mkdir('tmp/reel-check',{recursive:true});await page.locator('.niion-bold-reel-container').screenshot({animations:'disabled',path:`tmp/reel-check/reels-${width}.png`});}
     await page.evaluate(()=>window.scrollTo({top:0,behavior:'instant'}));
     await page.waitForTimeout(500);
-    assert(await videos.evaluateAll(list=>list.every(v=>v.paused)),'Off-screen reels should pause');
+    assert(await allVideos.evaluateAll(list=>list.every(v=>v.paused)),'Off-screen reels should pause');
     assert.deepEqual(errors,[]);
-    console.log(JSON.stringify({width,height,reels:3,errors,overflow}));
+    console.log(JSON.stringify({width,height,totalReels:15,visibleReels:5,errors,overflow}));
     await page.close();
   }
   const page=await browser.newPage({reducedMotion:'reduce'});
