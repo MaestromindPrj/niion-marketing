@@ -14,7 +14,7 @@ try {
   await page.locator('#projects').evaluate(el=>el.scrollIntoView({behavior:'instant'}));await page.waitForTimeout(1500);
   const visibleOrder=await page.locator('.niion-reel-slot:not([aria-hidden="true"]) video').evaluateAll(v=>v.map(el=>el.dataset.src));
   assert.equal(visibleOrder.length, 5);
-  assert.equal(await page.locator('.niion-bold-reel-card video').count(), 15);
+  assert.equal(await page.locator('.niion-bold-reel-card video').count(), 14);
   const cards=await page.locator('.niion-reel-slot:not([aria-hidden="true"]) .niion-bold-reel-card').evaluateAll(v=>v.map(el=>{const r=el.getBoundingClientRect();return {x:r.x,y:r.y}}));
   assert(cards[0].x<cards[1].x&&cards[1].x<cards[2].x&&cards[2].x<cards[3].x&&cards[3].x<cards[4].x);
   console.log(`Viewport ${width}: reel order and layout passed`);

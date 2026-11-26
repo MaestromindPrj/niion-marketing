@@ -235,20 +235,20 @@
 .services-hero-secondary { color: #dce4eb; border: 1px solid #b5cfe52b; background: #ffffff03; }
 .services-hero-secondary:hover { background: #c0e1ff0a; border-color: #b5cfe560; transform: translateY(-2px); }
 .services-hero-actions a:active { transform: translateY(0); }
-.services-hero a:focus-visible { outline: 2px solid #a9d8ff; outline-offset: 5px; }
+.services-hero :is(a, button):focus-visible { outline: 2px solid #a9d8ff; outline-offset: 5px; }
 .services-hero-expertise { max-width: 700px; margin: 56px auto 0; animation: services-hero-in 1s .4s both; }
 .services-hero-disciplines { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); border-bottom: 1px solid #b5cfe51c; }
-.services-hero-disciplines a {
+.services-hero-disciplines button {
   position: relative; display: flex; justify-content: center; align-items: center; min-height: 50px; padding: 12px 10px;
-  border-radius: 6px 6px 0 0; color: #8694a5; text-decoration: none; font: 500 14px/1.5 "Inter", sans-serif;
-  transition: color .22s ease, background .22s ease;
+  border: 0; border-radius: 6px 6px 0 0; background: transparent; color: #8694a5; font: 500 14px/1.5 "Inter", sans-serif;
+  cursor: pointer; transition: color .22s ease, background .22s ease;
 }
-.services-hero-disciplines a::after {
+.services-hero-disciplines button::after {
   content: ""; position: absolute; bottom: -1px; left: 20px; right: 20px; height: 2px;
   background: #a5d4f8; transform: scaleX(0); opacity: 0; transition: transform .25s ease, opacity .25s ease;
 }
-.services-hero-disciplines a[data-active], .services-hero-disciplines a:hover, .services-hero-disciplines a:focus-visible { color: #e1effb; background: linear-gradient(transparent, #9fcfff08); }
-.services-hero-disciplines a[data-active]::after, .services-hero-disciplines a:hover::after, .services-hero-disciplines a:focus-visible::after { transform: scaleX(1); opacity: 1; }
+.services-hero-disciplines button[data-active], .services-hero-disciplines button:hover, .services-hero-disciplines button:focus-visible { color: #e1effb; background: linear-gradient(transparent, #9fcfff08); }
+.services-hero-disciplines button[data-active]::after, .services-hero-disciplines button:hover::after, .services-hero-disciplines button:focus-visible::after { transform: scaleX(1); opacity: 1; }
 .services-hero-preview { min-height: 24px; margin: 18px 0 0; color: #8998aa; font: 400 14px/1.7 "Inter", sans-serif; }
 @keyframes services-hero-in { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
 @keyframes services-glow-in { from { opacity: 0; } to { opacity: 1; } }
@@ -262,8 +262,8 @@
   .services-hero-break { display: none; }
   .services-hero-expertise { margin-top: 40px; }
   .services-hero-disciplines { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 4px; border-bottom: 0; }
-  .services-hero-disciplines a { border: 1px solid #b5cfe51c; border-radius: 8px; min-height: 46px; }
-  .services-hero-disciplines a::after { left: 24px; right: 24px; bottom: 0; height: 1px; }
+  .services-hero-disciplines button { border: 1px solid #b5cfe51c; border-radius: 8px; min-height: 46px; }
+  .services-hero-disciplines button::after { left: 24px; right: 24px; bottom: 0; height: 1px; }
   .services-hero-preview { min-height: 48px; font-size: 13px; }
   .services-hero-actions { gap: 10px; }
   .services-hero-actions a { padding-inline: 18px; }

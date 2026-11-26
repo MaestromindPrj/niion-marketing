@@ -10,8 +10,13 @@ export const viewport: Viewport = { width: "device-width", initialScale: 1, them
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-IN">
+    <html lang="en-IN" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var n=performance.getEntriesByType("navigation")[0],i=document.referrer!==""&&new URL(document.referrer).origin===location.origin;if(n&&n.type!=="reload"&&(i||n.type==="back_forward"))document.documentElement.dataset.niionSkipLoader="true";}catch{}`
+          }}
+        />
         <link rel="stylesheet" href="/site/original.css" />
         <link rel="preload" href="/site/bootstrap.js" as="script" />
         {/* Fetch early, but preserve the bootstrap/hydration execution order. */}

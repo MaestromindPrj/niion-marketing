@@ -217,12 +217,12 @@ const servicesHero = `<header class="services-hero" aria-labelledby="services-he
       <a class="services-hero-secondary" href="/#contact">Let's talk</a>
     </div>
     <div class="services-hero-expertise">
-      <nav class="services-hero-disciplines" aria-label="Explore our expertise">
-        <a href="#service-lead-title" data-hero-preview="Connect with the right people. Turn attention into growth." data-active="true">Strategy</a>
-        <a href="#service-studio-title" data-hero-preview="Distinctive content and design that give your brand a voice.">Creative</a>
-        <a href="#service-commercial-title" data-hero-preview="From the first script to the final frame. Every detail considered.">Production</a>
-        <a href="#service-events-title" data-hero-preview="Thoughtfully crafted events. Lasting impressions.">Experiences</a>
-      </nav>
+      <div class="services-hero-disciplines" role="tablist" aria-label="Explore our expertise">
+        <button type="button" role="tab" aria-selected="true" data-hero-preview="Connect with the right people. Turn attention into growth." data-active="true">Strategy</button>
+        <button type="button" role="tab" aria-selected="false" data-hero-preview="Distinctive content and design that give your brand a voice.">Creative</button>
+        <button type="button" role="tab" aria-selected="false" data-hero-preview="From the first script to the final frame. Every detail considered.">Production</button>
+        <button type="button" role="tab" aria-selected="false" data-hero-preview="Thoughtfully crafted events. Lasting impressions.">Experiences</button>
+      </div>
       <p class="services-hero-preview">Connect with the right people. Turn attention into growth.</p>
     </div>
   </div>
@@ -239,23 +239,36 @@ function createServicesPageRef() {
     if (!hero) return;
     const glow = hero.querySelector('.services-hero-glow');
     const nav = hero.querySelector('.services-hero-disciplines');
-    const links = [...nav.querySelectorAll('a')];
+    const buttons = [...nav.querySelectorAll('button')];
     const preview = hero.querySelector('.services-hero-preview');
     const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
     const pointer = window.matchMedia('(hover: hover) and (pointer: fine)');
-    const select = link => {
-      links.forEach(item => item.toggleAttribute('data-active', item === link));
-      preview.textContent = link.dataset.heroPreview;
+    let selected = buttons[0];
+    const show = button => {
+      buttons.forEach(item => {
+        const active = item === button;
+        item.toggleAttribute('data-active', active);
+        item.setAttribute('aria-selected', String(active));
+      });
+      preview.textContent = button.dataset.heroPreview;
     };
-    const selectEvent = event => {
-      const link = event.target.closest('a');
-      if (links.includes(link)) select(link);
+    const previewEvent = event => {
+      const button = event.target.closest('button');
+      if (buttons.includes(button)) show(button);
     };
-    const restore = () => select(links.includes(document.activeElement) ? document.activeElement : links[0]);
-    nav.addEventListener('pointerover', selectEvent);
-    nav.addEventListener('focusin', selectEvent);
+    const clickEvent = event => {
+      const button = event.target.closest('button');
+      if (buttons.includes(button)) {
+        selected = button;
+        show(selected);
+      }
+    };
+    const restore = () => show(buttons.includes(document.activeElement) ? document.activeElement : selected);
+    const onFocusOut = event => { if (!nav.contains(event.relatedTarget)) show(selected); };
+    nav.addEventListener('pointerover', previewEvent);
+    nav.addEventListener('focusin', previewEvent);
+    nav.addEventListener('click', clickEvent);
     nav.addEventListener('pointerleave', restore);
-    const onFocusOut = event => { if (!nav.contains(event.relatedTarget)) select(links[0]); };
     nav.addEventListener('focusout', onFocusOut);
 
     let frame = 0;
@@ -285,8 +298,9 @@ function createServicesPageRef() {
       reset();
       hero.removeEventListener('pointermove', move);
       hero.removeEventListener('pointerleave', reset);
-      nav.removeEventListener('pointerover', selectEvent);
-      nav.removeEventListener('focusin', selectEvent);
+      nav.removeEventListener('pointerover', previewEvent);
+      nav.removeEventListener('focusin', previewEvent);
+      nav.removeEventListener('click', clickEvent);
       nav.removeEventListener('pointerleave', restore);
       nav.removeEventListener('focusout', onFocusOut);
       motion.removeEventListener('change', reset);

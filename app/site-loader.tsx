@@ -3,17 +3,19 @@
 import { useEffect, useState } from "react";
 
 export default function SiteLoader() {
-  // Start hidden so internal navigation never flashes the loading overlay.
-  const [finished, setFinished] = useState(true);
+  // Start visible so opening or refreshing shows the loading screen before the website reveals.
+  const [finished, setFinished] = useState(false);
 
   useEffect(() => {
     const navigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined;
     const internalVisit = document.referrer !== "" &&
       new URL(document.referrer).origin === window.location.origin;
     if (navigation?.type !== "reload" &&
-        (internalVisit || navigation?.type === "back_forward")) return;
+        (internalVisit || navigation?.type === "back_forward")) {
+      setFinished(true);
+      return;
+    }
 
-    setFinished(false);
     const site = document.getElementById("niion-site");
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
@@ -33,7 +35,7 @@ export default function SiteLoader() {
       setFinished(true);
     };
     // A broken asset or unavailable GPU must never block the page.
-    const timeout = window.setTimeout(finish, 2000);
+    const timeout = window.setTimeout(finish, 4000);
     const check = (now: number) => {
       // Avoid scanning the entire exported DOM on every animation frame.
       if (now - lastCheck < 100) {
