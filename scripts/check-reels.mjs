@@ -36,7 +36,8 @@ try {
     const modalVideo = page.locator('.niion-reel-modal-video');
     await modal.waitFor({ state: 'visible' });
     await page.waitForFunction(el => el.readyState >= 2 && !el.paused, await modalVideo.elementHandle());
-    assert.equal(await modalVideo.evaluate((v, src) => !v.muted && v.volume === 1 && v.controls && v.getAttribute('src') === src, expectedSrc), true, 'Fullscreen reel should play unmuted with controls');
+    assert.equal(await modalVideo.evaluate((v, src) => !v.muted && v.volume === 1 && v.controls && v.controlsList.contains('nodownload') && v.disablePictureInPicture && v.getAttribute('src') === src, expectedSrc), true, 'Fullscreen reel should play unmuted with controls and no download option');
+    assert.equal(await modalVideo.evaluate(v => !v.dispatchEvent(new MouseEvent('contextmenu', { bubbles: true, cancelable: true }))), true, 'Right-click context menu should be blocked on fullscreen reel');
     assert(await allVideos.evaluateAll(list => list.every(v => v.paused)), 'Background reels should pause while fullscreen modal is open');
     await page.keyboard.press('ArrowRight');
     await page.waitForFunction(([el, prev]) => el.getAttribute('src') !== prev && el.readyState >= 2, [await modalVideo.elementHandle(), expectedSrc]);

@@ -42,7 +42,7 @@ export const boldReelCardHtml = `<div class="niion-bold-reel-container">
       const isVisible = ['-2', '-1', '0', '1', '2'].includes(pos);
       return `<div class="niion-reel-slot" data-reel-index="${index}" data-reel-pos="${pos}"${isVisible ? '' : ' aria-hidden="true"'}>
       <div class="niion-bold-reel-card" data-niion-reel style="--reel-delay:-${(index % 5) * 1.4}s">
-        <video data-src="/reels/${encodeURIComponent(reel.file)}" poster="/reels/posters/${reel.poster}.jpg" width="${reel.width}" height="${reel.height}" loop muted playsinline preload="none" disablepictureinpicture tabindex="${isVisible ? '0' : '-1'}" role="button" aria-label="Watch ${reel.label} fullscreen with audio" data-label="${reel.label}"></video>
+        <video data-src="/reels/${encodeURIComponent(reel.file)}" poster="/reels/posters/${reel.poster}.jpg" width="${reel.width}" height="${reel.height}" loop muted playsinline preload="none" controlslist="nodownload noplaybackrate" disablepictureinpicture disableremoteplayback tabindex="${isVisible ? '0' : '-1'}" role="button" aria-label="Watch ${reel.label} fullscreen with audio" data-label="${reel.label}"></video>
       </div>
     </div>`;
     }).join('')}
@@ -60,7 +60,7 @@ function createFullscreenModal() {
   modal.hidden = true;
   modal.innerHTML = `
     <div class="niion-reel-modal-stage">
-      <video class="niion-reel-modal-video" playsinline loop controls preload="auto"></video>
+      <video class="niion-reel-modal-video" playsinline loop controls controlslist="nodownload noplaybackrate" disablepictureinpicture disableremoteplayback preload="auto"></video>
     </div>
     <button class="niion-reel-modal-close" type="button" aria-label="Close fullscreen reel">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
@@ -247,6 +247,7 @@ export function createBoldReelRef() {
 
     const onPrev = () => { if (modalIndex >= 0) playModalReel(modalIndex - 1); };
     const onNext = () => { if (modalIndex >= 0) playModalReel(modalIndex + 1); };
+    const preventContextMenu = event => event.preventDefault();
 
     const onKeyDown = event => {
       if (modalIndex < 0) return;
@@ -289,9 +290,11 @@ export function createBoldReelRef() {
     for (const video of videos) {
       video.addEventListener('click', onCardActivate);
       video.addEventListener('keydown', onCardActivate);
+      video.addEventListener('contextmenu', preventContextMenu);
     }
 
     modal.addEventListener('click', onModalClick);
+    modalVideo.addEventListener('contextmenu', preventContextMenu);
     closeBtn.addEventListener('click', closeModal);
     prevBtn.addEventListener('click', onPrev);
     nextBtn.addEventListener('click', onNext);
@@ -305,6 +308,7 @@ export function createBoldReelRef() {
       observer?.disconnect();
       preloadObserver?.disconnect();
       modal.removeEventListener('click', onModalClick);
+      modalVideo.removeEventListener('contextmenu', preventContextMenu);
       closeBtn.removeEventListener('click', closeModal);
       prevBtn.removeEventListener('click', onPrev);
       nextBtn.removeEventListener('click', onNext);
@@ -315,6 +319,7 @@ export function createBoldReelRef() {
         video.pause();
         video.removeEventListener('click', onCardActivate);
         video.removeEventListener('keydown', onCardActivate);
+        video.removeEventListener('contextmenu', preventContextMenu);
       }
       modal.remove();
     };
